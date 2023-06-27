@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        *{
+            font-family: sans-serif;
+            margin : 20px;
+            text-align: center;
+        }
+      .container {
+        color: #000;
+        line-height: 28px;
+        word-spacing: 2px;
+      }
+      .container::selection {
+        background: yellowgreen;
+      }
+
+      .inactive {
+        user-select: none;
+        color: grey;
+      }
+      .audiobox {
+        position: absolute;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="'audiobox">
+      <audio controls autoplay>
+        <source src="output.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+    <div class="container" id="container">
+      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam suscipit,
+      vel reprehenderit sequi, maiores optio corporis non est ipsam in assumenda
+      vitae commodi quaerat dolorem enim, incidunt magnam soluta voluptas quas
+      ratione? Fugit, ipsam iste ab eligendi odio distinctio tenetur,
+      laudantium, expedita excepturi ratione asperiores numquam! Recusandae
+      aperiam eligendi facilis officiis iusto, vitae, et itaque harum ullam
+      velit excepturi debitis illo deleniti nemo quis tempore ea? Voluptatem
+      repudiandae id earum rerum eum, hic voluptatibus dolorem, dicta sit,
+      architecto consequuntur impedit repellat? Quaerat totam culpa, fugit iusto
+      error quos cum, eius dolores praesentium nisi velit numquam minima autem
+      deleniti id, saepe accusamus voluptate quas. Laborum amet distinctio
+      ratione tempore id laboriosam sunt odit vitae temporibus mollitia iste
+      doloremque quae omnis reiciendis sint harum beatae tenetur, culpa dicta
+      placeat ut. Rem, debitis? Nam tempore velit ea nihil iste temporibus
+      necessitatibus maiores labore beatae, fugit facilis, eligendi quia
+      numquam? Esse ea quo at voluptatum quia et quos officia reiciendis.
+      Asperiores recusandae temporibus et tempore non doloremque neque autem!
+      Debitis, sint expedita eos saepe perspiciatis ducimus rerum accusamus
+      enim, dolores obcaecati suscipit sit repudiandae quae dolorum laudantium
+      in amet nostrum? Accusamus, dicta. Sed itaque explicabo ipsa, consectetur
+      in doloremque sit illum pariatur ipsam, repudiandae autem nesciunt rerum
+      magni repellat. Ea molestias ab quasi veritatis a asperiores at dolores
+      iure voluptatem.
+    </div>
+  </body>
+  <script>
+    document.addEventListener("mouseup", (event) => {
+      if (window.getSelection().toString().length) {
+        let exactText = window.getSelection().toString();
+
+        // if (exactText == window.getSelection().toString()) return;
+
+        document.getElementById("container").classList.add("inactive");
+
+        fetch("http://localhost:3000", {
+          method: "POST",
+          body: JSON.stringify({
+            inputText: exactText,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
+          .then((res) => {
+            document.getElementById("container").classList.remove("inactive");
+            var audio = new Audio("output.mp3");
+            audio.play();
+          })
+          .catch((er) => console.log("ERROR", er));
+      }
+    });
+  </script>
+</html>
