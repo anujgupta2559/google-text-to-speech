@@ -21,19 +21,17 @@ const getTextToSpeech = async(inputText) => {
   };
 
   const outputFileName = "output.mp3";
-
-  // fs.writeFileSync(outputFileName, "")
   
   await client
     .synthesizeSpeech(request)
-    .then(async (response) => {
+    .then( (response) => {
       console.log(response);
       const audioContent = _.get(response[0], "audioContent");
 
       if (audioContent) {
-        await fs.writeFileSync(outputFileName, audioContent, "binary");
+        fs.writeFileSync(outputFileName, audioContent, "binary");
         console.log(
-          `Audio content successfully written to file: ${''}`
+          `Audio content successfully written to file`
         );
       } else {
         console.log("Failed to get audio content");
